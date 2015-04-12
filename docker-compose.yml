@@ -1,0 +1,8 @@
+shipyardrethinkdbdata:
+    image: shipyard/rethinkdb
+    entrypoint: /bin/bash
+    command: -l
+shipyardrethinkdb:
+    image: shipyard/rethinkdb
+    volumes_from: 
+        - shipyardrethinkdbdata
