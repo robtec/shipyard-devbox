@@ -1,8 +1,53 @@
+swarmagentmaster:
+    image: swarm
+    stdin_open: true
+    tty: true
+    environment:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    ports:
+        - "3375:2375"
+    command: manage token://d6ef2f38edf270c027e479832d31aea1
+
+swarmagent:
+    image: swarm
+    stdin_open: true
+    tty: true
+    environment:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    command: join --addr=16.49.134.178:2375 token://d6ef2f38edf270c027e479832d31aea1
+
 shipyardrethinkdbdata:
     image: shipyard/rethinkdb
+    stdin_open: true
+    tty: true
     entrypoint: /bin/bash
     command: -l
+
 shipyardrethinkdb:
     image: shipyard/rethinkdb
+    stdin_open: true
+    tty: true
     volumes_from: 
         - shipyardrethinkdbdata
+    ports:
+        - "8080"
+        - "28015"
+        - "29015"
+
+shipyard:
+    image: tombee/devbox
+    stdin_open: true
+    tty: true
+    environment:
+        - http_proxy
+        - https_proxy
+        - no_proxy
+    links:
+        - shipyardrethinkdb:rethinkdb
+        - swarmagentmaster:master
+    ports:
+        - "8080:8080"
