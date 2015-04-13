@@ -11,7 +11,7 @@ $ docker-compose up
 
 ### Attach to the devbox
 ```
-$ docker exec -it shipyarddevbox_shipyard_1 fish
+$ docker exec -it shipyarddev_shipyard_1 fish
 ```
 
 ### Get and run shipyard v3
