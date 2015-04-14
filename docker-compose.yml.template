@@ -41,7 +41,7 @@ shipyardrethinkdb:
         - "29015"
 
 shipyard:
-    image: tombee/devbox
+    image: tombee/shipyard-devbox
     stdin_open: true
     tty: true
     environment:
