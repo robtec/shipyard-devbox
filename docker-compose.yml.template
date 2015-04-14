@@ -10,17 +10,18 @@ swarmagentmaster:
         - ${DOCKER_CERT_PATH}:/certs
     ports:
         - "3375:2375"
-    command: manage --tlsverify --tlscacert=/certs/ca.pem --tlscert=/certs/cert.pem --tlskey=/certs/key.pem token://d6ef2f38edf270c027e479832d31aea1
+    command: manage --tlsverify --tlscacert=/certs/ca.pem --tlscert=/certs/cert.pem --tlskey=/certs/key.pem token://${DISCOVERY_ID}
 
 swarmagent:
     image: swarm
     stdin_open: true
     tty: true
+    env_file: env
     environment:
         - http_proxy
         - https_proxy
         - no_proxy
-    command: join --addr=192.168.99.156:2376 token://d6ef2f38edf270c027e479832d31aea1
+    command: join --addr=${DEVBOX_IP}:2376 token://${DISCOVERY_ID}
 
 shipyardrethinkdbdata:
     image: shipyard/rethinkdb
