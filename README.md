@@ -4,22 +4,16 @@ $ curl -L https://github.com/docker/compose/releases/download/1.1.0/docker-compo
 $ chmod +x /usr/local/bin/docker-compose
 ```
 
-### Start the cluster and devbox
+### Starting the cluster and devbox
 ```
-$ docker-compose up
-```
-
-### Attach to the devbox
-```
-$ docker exec -it shipyarddev_shipyard_1 fish
-```
-
-### Get and run shipyard v3
-```
-$ go get github.com/shipyard/shipyard
-$ cd dev/gocode/src/github.com/shipyard/shipyard/controller
-$ git checkout swarm-v3
-$ make
-$ ./controller server -d http://16.49.134.178:3375
+docker-machine create -d virtualbox shipyard-devbox
+docker-machine env shipyard-devbox | source
+git clone git@github.com:tombee/shipyard-devbox
+cd shipyard-devbox
+docker-compose up
+go get github.com/shipyard/shipyard
+cd dev/gocode/src/github.com/shipyard/shipyard/controller
+make
+./controller server -d https://192.168.99.156:3375 --tls-ca-cert /certs/ca.pem --tls-cert /certs/cert.pem --tls-key /certs/key.pem
 ```
 

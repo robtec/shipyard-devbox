@@ -6,9 +6,11 @@ swarmagentmaster:
         - http_proxy
         - https_proxy
         - no_proxy
+    volumes:
+        - ${DOCKER_CERT_PATH}:/certs
     ports:
         - "3375:2375"
-    command: manage token://d6ef2f38edf270c027e479832d31aea1
+    command: manage --tlsverify --tlscacert=/certs/ca.pem --tlscert=/certs/cert.pem --tlskey=/certs/key.pem token://d6ef2f38edf270c027e479832d31aea1
 
 swarmagent:
     image: swarm
@@ -18,7 +20,7 @@ swarmagent:
         - http_proxy
         - https_proxy
         - no_proxy
-    command: join --addr=16.49.134.178:2375 token://d6ef2f38edf270c027e479832d31aea1
+    command: join --addr=192.168.99.156:2376 token://d6ef2f38edf270c027e479832d31aea1
 
 shipyardrethinkdbdata:
     image: shipyard/rethinkdb
@@ -46,6 +48,9 @@ shipyard:
         - http_proxy
         - https_proxy
         - no_proxy
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ${DOCKER_CERT_PATH}:/certs
     links:
         - shipyardrethinkdb:rethinkdb
         - swarmagentmaster:master
