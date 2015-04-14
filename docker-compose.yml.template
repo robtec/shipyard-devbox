@@ -16,7 +16,6 @@ swarmagent:
     image: swarm
     stdin_open: true
     tty: true
-    env_file: env
     environment:
         - http_proxy
         - https_proxy
