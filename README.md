@@ -10,7 +10,7 @@ docker-machine create -d virtualbox shipyard-devbox
 docker-machine env shipyard-devbox | source
 git clone git@github.com:tombee/shipyard-devbox
 cd shipyard-devbox
-./generate.sh
+eval $(./generate.sh)
 docker-compose up
 go get github.com/shipyard/shipyard
 cd dev/gocode/src/github.com/shipyard/shipyard/controller
