@@ -1,3 +1,15 @@
+### Installing Machine
+#### Linux (64-bit)
+```shell
+$ curl -L https://github.com/docker/machine/releases/download/v0.1.0/docker-machine_linux-amd64 > /usr/local/bin/docker-machine
+```
+#### OSX
+```shell
+$ curl -L https://github.com/docker/machine/releases/download/v0.1.0/docker-machine_darwin-amd64 > /usr/local/bin/docker-machine
+```
+```shell
+$ chmod +x /usr/local/bin/docker-machine
+```
 ### Installing Compose
 ```shell
 $ curl -L https://github.com/docker/compose/releases/download/1.1.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
@@ -5,7 +17,7 @@ $ chmod +x /usr/local/bin/docker-compose
 ```
 
 ### Starting the cluster and devbox
-```
+```shell
 docker-machine create -d virtualbox shipyard-devbox
 docker-machine env shipyard-devbox | source
 git clone git@github.com:tombee/shipyard-devbox
