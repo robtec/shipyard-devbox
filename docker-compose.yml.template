@@ -7,7 +7,7 @@ swarmagentmaster:
         - https_proxy
         - no_proxy
     volumes:
-        - ${DOCKER_CERT_PATH}:/certs
+        - /certs:/certs
     ports:
         - "3375:2375"
     command: manage --tlsverify --tlscacert=/certs/ca.pem --tlscert=/certs/cert.pem --tlskey=/certs/key.pem token://${DISCOVERY_ID}
@@ -50,7 +50,7 @@ shipyard:
         - no_proxy
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
-        - ${DOCKER_CERT_PATH}:/certs
+        - /certs:/certs
     links:
         - shipyardrethinkdb:rethinkdb
         - swarmagentmaster:master
