@@ -1,6 +1,17 @@
 #!/bin/bash
+ACTIVE_MACHINE=$(docker-machine active)
 DEVBOX_IP=$(docker-machine ip)
-DISCOVERY_ID=$(docker run --rm swarm create)
+
+if [ -n "${http_proxy+1}" ]; then
+    echo -e "export HTTP_PROXY=$http_proxy\nexport HTTPS_PROXY=$http_proxy\nexport http_proxy=$http_proxy\nexport https_proxy=$http_proxy" | docker-machine ssh $ACTIVE_MACHINE 'sudo tee -a /var/lib/boot2docker/profile'
+    docker-machine ssh $ACTIVE_MACHINE 'sudo /etc/init.d/docker stop'
+    sleep 1
+    docker-machine ssh $ACTIVE_MACHINE 'sudo /etc/init.d/docker start'
+    sleep 3
+    export NO_PROXY="$NO_PROXY,$(docker-machine ip)"
+    export no_proxy="$no_proxy,$(docker-machine ip)"
+fi
+DISCOVERY_ID=$(docker run -e http_proxy -e https_proxy -e no_proxy --rm swarm create)
 
 sed -e "s/\${DEVBOX_IP}/$DEVBOX_IP/" -e "s/\${DISCOVERY_ID}/$DISCOVERY_ID/" docker-compose.yml.template > docker-compose.yml
 
